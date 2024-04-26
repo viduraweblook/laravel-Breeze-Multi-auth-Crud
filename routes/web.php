@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TestController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,3 +35,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/products/edit/{id}', [ProductController::class, 'update'])->name('admin/products/update');
     Route::get('/admin/products/delete/{id}', [ProductController::class, 'delete'])->name('admin/products/delete');
 });
+
+Route::get('/testmail', [TestController::class, 'index'])->name('testmail');
