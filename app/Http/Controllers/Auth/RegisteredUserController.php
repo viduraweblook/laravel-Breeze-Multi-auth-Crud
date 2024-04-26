@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Mail\TestMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class RegisteredUserController extends Controller
 {
@@ -31,7 +34,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -44,6 +47,20 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        if (auth()->user()) {
+            $user = Auth::user();
+            // print_r($user);
+            $subject = 'Inform Logging Message To ' . $user->name;
+            $body = ' Hello ' . $user->name . ' You Logged in ' . $user->email;
+            $useremailname = $user->name;
+            Mail::to($user->email)->send(new TestMail($subject, $body, $useremailname));
+        } else {
+            $body = 'No User';
+            $subject = 'No User MAil & F#ck You';
+            $useremailname = 'No User name';
+            Mail::to('noMail@gmail.com')->send(new TestMail($subject, $body, $useremailname));
+        }
 
         return redirect(route('dashboard', absolute: false));
     }

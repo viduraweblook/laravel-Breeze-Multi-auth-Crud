@@ -14,13 +14,17 @@ class TestController extends Controller
         if (auth()->user()) {
             $user = Auth::user();
             // print_r($user);
-            $subject = 'Inform Logging Message To '. $user->name;
+            $subject = 'Inform Logging Message To ' . $user->name;
             $body = ' Hello ' . $user->name . ' You Logged in ' . $user->email;
-            Mail::to($user->email)->send(new TestMail($subject, $body));
+            $useremailname = $user->name;
+            Mail::to($user->email)->send(new TestMail($subject, $body, $useremailname));
         } else {
             $body = 'No User';
             $subject = 'No User MAil & F#ck You';
-            Mail::to('noMail@gmail.com')->send(new TestMail($subject, $body));
+            $useremailname = 'No User name';
+            Mail::to('noMail@gmail.com')->send(new TestMail($subject, $body , $useremailname));
         }
+
+        // return view('email.email');
     }
 }
