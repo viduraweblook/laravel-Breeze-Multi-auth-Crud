@@ -54,12 +54,14 @@ class RegisteredUserController extends Controller
             $subject = 'Inform Logging Message To ' . $user->name;
             $body = ' Hello ' . $user->name . ' You Logged in ' . $user->email;
             $useremailname = $user->name;
-            Mail::to($user->email)->send(new TestMail($subject, $body, $useremailname));
+            $filepath = public_path(path: 'favicon.ico');
+            Mail::to($user->email)->send(new TestMail($subject, $body, $useremailname, $filepath));
         } else {
             $body = 'No User';
             $subject = 'No User MAil & F#ck You';
             $useremailname = 'No User name';
-            Mail::to('noMail@gmail.com')->send(new TestMail($subject, $body, $useremailname));
+            $filepath = public_path(path: 'favicon.ico');
+            Mail::to('noMail@gmail.com')->send(new TestMail($subject, $body, $useremailname, $filepath));
         }
 
         return redirect(route('dashboard', absolute: false));

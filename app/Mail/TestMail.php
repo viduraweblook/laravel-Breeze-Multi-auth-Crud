@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -18,7 +19,7 @@ class TestMail extends Mailable
      */
     public $subject, $body, $useremailname;
 
-    public function __construct($subject, $body, $useremailname)
+    public function __construct($subject, $body, $useremailname , private $attachedFile)
     {
         $this->subject = $subject;
         $this->body = $body;
@@ -32,6 +33,7 @@ class TestMail extends Mailable
     {
         return new Envelope(
             subject: $this->subject,
+            // from: new Address('vidura@gmail.com','vidura'); env eke meka assign karalatiye
         );
     }
 
@@ -52,6 +54,8 @@ class TestMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        return [
+            Attachment::fromPath($this->attachedFile)
+        ];
     }
 }
