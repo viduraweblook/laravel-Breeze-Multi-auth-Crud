@@ -26,7 +26,6 @@ class TestController extends Controller
             $filepath = public_path(path: 'sample.pdf');
             Mail::to('noMail@gmail.com')->send(new TestMail($subject, $body , $useremailname, $filepath))->cc('')->bcc('');
         }
-
         // return view('email.email');
     }
 }
